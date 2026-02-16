@@ -26,7 +26,10 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 import java.nio.charset.Charset;
 
+
+
 class WebServer {
+  String story = "Once upon a time, there was a web server that served stories.";
   public static void main(String args[]) {
     WebServer server = new WebServer(9000);
   }
@@ -217,7 +220,65 @@ class WebServer {
           // TODO: Include error handling here with a correct error code and
           // a response that makes sense
 
-        } else if (request.contains("github?")) {
+        } else if (request.contains("addline?")) {
+          // pulls the query from the request and runs it with the OMDb API
+          // check out http://www.omdbapi.com/
+
+  
+
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          query_pairs = splitQuery(request.replace("addline?", ""));
+          
+          //extract String
+          String line = query_pairs.get("text");
+
+          if (line == "") {
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Missing 'text' parameter in query");
+          } else {
+          builder.append("HTTP/1.1 200 OK\n");
+          builder.append("Content-Type: text/html; charset=utf-8\n");
+          builder.append("\n");
+          story += " " + line;
+          //builder.append(story);
+          }
+
+        }
+        else if (request.contains("addline?text")) {
+          // pulls the query from the request and runs it with the OMDb API
+          // check out http://www.omdbapi.com/
+
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Missing 'text' parameter in query");
+          
+        }
+         
+        else if (request.contains("story")) {
+          // pulls the query from the request and runs it with the OMDb API
+          // check out http://www.omdbapi.com/
+
+          builder.append("HTTP/1.1 200 OK\n");
+          builder.append("Content-Type: text/html; charset=utf-8\n");
+          builder.append("\n");
+          builder.append(story);
+        }
+
+        else if (request.contains("addline")) {
+          // pulls the query from the request and runs it with the OMDb API
+          // check out http://www.omdbapi.com/
+
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Missing 'text' parameter in query");
+          
+        }
+
+        else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
           // check out https://docs.github.com/rest/reference/
           //
